@@ -31,6 +31,8 @@ jobs:
 
       # Testleri çalıştır
       - name: Run tests
+        env:
+          env_var: ${{ vars.ENV }}
         run: ./vendor/bin/pest
 
       # Eğer testler başarılıysa, deploy işlemini başlat

@@ -29,6 +29,10 @@ jobs:
       - name: Install dependencies
         run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
 
+      # Composer ile bağımlılıkları yükle
+      - name: Migrate DB
+        run: php artisan migrate --seed
+
       # Testleri çalıştır
       - name: Run tests
         env:

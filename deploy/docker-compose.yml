@@ -1,0 +1,35 @@
+version: '3.1'
+
+services:
+    db:
+        image: mysql:8
+        restart: unless-stopped
+        container_name: db
+        ports:
+            - "3307:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_DATABASE: laravel
+        volumes:
+            - dbdata:/var/lib/mysql/
+        networks:
+            - app-network
+    webserver:
+        image: nginx:alpine
+        container_name: webserver
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./:/var/www
+            - ./nginx/conf.d/:/etc/nginx/conf.d/
+        networks:
+            - app-network
+networks:
+    app-network:
+        driver: bridge
+volumes:
+    dbdata:
+        driver: local

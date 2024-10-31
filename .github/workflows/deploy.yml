@@ -1,0 +1,53 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main  # Yalnızca main dalına push yapıldığında çalışır
+
+jobs:
+  test-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Repository'yi clone'la
+      - name: Check out the code
+        uses: actions/checkout@v2
+
+      # Docker hizmetlerini başlat ve gerekli ortam değişkenlerini ayarla
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # PHP ve Composer kur
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2' # Laravel projenizin PHP sürümüne göre bunu ayarlayın
+          tools: composer
+
+      # Composer ile bağımlılıkları yükle
+      - name: Install dependencies
+        run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
+      # Testleri çalıştır
+      - name: Run tests
+        run: ./vendor/bin/pest
+
+      # Eğer testler başarılıysa, deploy işlemini başlat
+      - name: Deploy to Server
+        if: success() # Sadece testler başarılıysa çalışır
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          echo "$SSH_KEY" > private_key
+          chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key -p "$SSH_PORT" "$SSH_USERNAME@$SSH_HOST" << 'EOF'
+            cd /var/www/location-app
+            docker-compose down
+            git pull origin main
+            docker-compose up -d --build
+          EOF
+          rm private_key # SSH anahtarını sil

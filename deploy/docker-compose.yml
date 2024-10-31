@@ -1,9 +1,9 @@
-version: '3.1'
+version: '3.8'
 
 services:
     db:
         image: mysql:8
-        restart: unless-stopped
+        restart: no
         container_name: db
         ports:
             - "3307:3306"
@@ -17,14 +17,35 @@ services:
     webserver:
         image: nginx:alpine
         container_name: webserver
-        restart: unless-stopped
+        restart: no
         tty: true
         ports:
             - "80:80"
             - "443:443"
         volumes:
-            - ./:/var/www
+            - ../:/var/www
             - ./nginx/conf.d/:/etc/nginx/conf.d/
+            - ./nginx/ssl/:/etc/nginx/ssl/
+        networks:
+            - app-network
+    app:
+        build:
+            args:
+                user: developer
+                uid: 1000
+            context: ./
+            dockerfile: Dockerfile
+        image: app
+        container_name: location-app
+        restart: no
+        environment:
+            VIRTUAL_HOST: localhost
+        working_dir: /var/www/
+        volumes:
+            - ../:/var/www
+            - ~/.ssh:/root/.ssh
+        depends_on:
+            - db
         networks:
             - app-network
 networks:

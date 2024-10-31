@@ -104,7 +104,7 @@ class LocationController extends Controller
     public function makeRoute(Request $request)
     {
         if (count($request->ids)!=2){
-            return ApiResponseClass::sendResponse('Locations count must be 2','',400);
+            return ApiResponseClass::sendResponse(null,'Locations count must be 2',400);
         }
         $distance=$this->locationRepositoryInterface->makeRoute($request->ids);
         $rslt=[

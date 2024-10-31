@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('created_user_id')->constrained()->on('users')->cascadeOnDelete();
             $table->string('name');
-            $table->integer('lat');
-            $table->integer('long');
+            $table->double('lat');
+            $table->double('long');
             $table->string('marker_color');
             $table->timestamps();
         });

@@ -27,7 +27,7 @@ class UpdateLocationRequest extends FormRequest
             'name' => 'required',
             'lat' => 'required',
             'long' => 'required',
-            'marker_color' => 'required',
+            'marker_color' => 'required|regex:/^#([A-Fa-f0-9]{6})$/|max:7',
         ];
     }
 

@@ -14,7 +14,8 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::middleware('auth:sanctum')->group( function () {
+Route::middleware(['auth:sanctum','throttle:global'])->group( function () {
     Route::apiResource('locations',LocationController::class);
+    Route::post("locations/make-route",[LocationController::class,"makeRoute"]);
 });
 

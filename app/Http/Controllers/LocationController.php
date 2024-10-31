@@ -100,4 +100,17 @@ class LocationController extends Controller
 
         return ApiResponseClass::sendResponse('Location Delete Successful','',204);
     }
+
+    public function makeRoute(Request $request)
+    {
+        if (count($request->ids)!=2){
+            return ApiResponseClass::sendResponse('Locations count must be 2','',400);
+        }
+        $distance=$this->locationRepositoryInterface->makeRoute($request->ids);
+        $rslt=[
+            "related_locations"=>$request->ids,
+            "result"=>$distance
+        ];
+        return ApiResponseClass::sendResponse($rslt,'Distance Calculated',200);
+    }
 }

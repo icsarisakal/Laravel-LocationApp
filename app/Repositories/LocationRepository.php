@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\LocationRepositoryInterface;
 use App\Models\Location;
+use KMLaravel\GeographicalCalculator\Classes\GeographicalCalculator;
 
 class LocationRepository implements LocationRepositoryInterface
 {
@@ -46,6 +47,11 @@ class LocationRepository implements LocationRepositoryInterface
 
     public function makeRoute(array $ids)
     {
-        // TODO: Implement makeRoute() method.
+        $first = Location::find($ids[0]);
+        $second = Location::find($ids[1]);
+
+        $geo= new GeographicalCalculator();
+        $geo->initCoordinates($first->lat,$second->lat,$first->long,$second->long,['units' => ['km','m','mile']]);
+        return $geo->getDistance();
     }
 }

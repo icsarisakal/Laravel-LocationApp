@@ -52,8 +52,6 @@ jobs:
           chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key -p "$SSH_PORT" "$SSH_USERNAME@$SSH_HOST" << 'EOF'
             cd /var/www/location-app
-            docker-compose down
             git pull origin main
-            docker-compose up -d --build
           EOF
           rm private_key # SSH anahtarını sil

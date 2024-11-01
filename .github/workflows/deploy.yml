@@ -46,11 +46,16 @@ jobs:
           mysql version: '8.0' # Optional, default value is "latest". The version of the MySQL
           mysql database: 'laravel' # Optional, default value is "test". The specified database which will be create
           mysql root password: 'password' # Required if "mysql user" is empty, default is empty. The root superuser password
+      
       # Composer ile bağımlılıkları yükle
-#      - name: Migrate DB
-#        run: php artisan migrate --seed
       - name: Wait for MySQL
         run: sleep 15
+
+      - name: Create DB
+        run: mysql -u root -e "create database laravel"; 
+
+      - name: Migrate DB
+        run: php artisan migrate --seed
       # Testleri çalıştır
       - name: Run tests
         run: ./vendor/bin/pest

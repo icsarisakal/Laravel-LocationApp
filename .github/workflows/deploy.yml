@@ -34,7 +34,7 @@ jobs:
         run: touch .env
 
       - name: Write .env
-        run: echo ${{ vars.ENV }} > .env
+        run: echo -e ${{ vars.ENV }} > .env
 
       # Composer ile bağımlılıkları yükle
 #      - name: Migrate DB

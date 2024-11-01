@@ -30,11 +30,8 @@ jobs:
         run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
 
       #ENV yi oluştur.
-      - name: Create .env file
-        run: touch .env
-
-      - name: Write .env
-        run: echo -e ${{ vars.ENV }} > .env
+      - name: Copy .env file
+        run: cp .env.ci .env
 
       # Composer ile bağımlılıkları yükle
 #      - name: Migrate DB

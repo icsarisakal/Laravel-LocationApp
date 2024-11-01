@@ -12,9 +12,7 @@ return new class extends Migration
     public function up(): void
     {
 
-        Schema::dropDatabaseIfExists(env("DB_DATABASE"));
         Schema::createDatabase(env("DB_DATABASE"));
-        \Illuminate\Support\Facades\DB::raw("use ".env("DB_DATABASE").";");
 
         Schema::create('users', function (Blueprint $table) {
             $table->id();

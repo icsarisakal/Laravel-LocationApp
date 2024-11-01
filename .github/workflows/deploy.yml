@@ -49,7 +49,8 @@ jobs:
       # Composer ile bağımlılıkları yükle
 #      - name: Migrate DB
 #        run: php artisan migrate --seed
-
+      - name: Wait for MySQL
+        run: sleep 15
       # Testleri çalıştır
       - name: Run tests
         run: ./vendor/bin/pest

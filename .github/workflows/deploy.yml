@@ -50,10 +50,7 @@ jobs:
       # Composer ile bağımlılıkları yükle
       - name: Wait for MySQL
         run: sleep 15
-
-      - name: Create DB
-        run: mysql -u root -e "create database laravel"; 
-
+        
       - name: Migrate DB
         run: php artisan migrate --seed
       # Testleri çalıştır

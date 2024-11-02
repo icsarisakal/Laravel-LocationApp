@@ -5,6 +5,11 @@ services:
         image: mysql:8
         restart: no
         container_name: db
+        healthcheck:
+            test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
         ports:
             - "3307:3306"
         environment:
@@ -36,6 +41,8 @@ services:
             context: ./
             dockerfile: Dockerfile
         image: app
+        command: >
+            sh -c "composer install && php artisan key:generate && php artisan migrate && php-fpm"
         container_name: location-app
         restart: no
         environment:
@@ -45,7 +52,8 @@ services:
             - ../:/var/www
             - ~/.ssh:/root/.ssh
         depends_on:
-            - db
+            db:
+                condition: service_healthy
         networks:
             - app-network
 networks:

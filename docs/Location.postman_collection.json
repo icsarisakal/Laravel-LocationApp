@@ -1,0 +1,328 @@
+{
+	"info": {
+		"_postman_id": "80bc8b47-1626-4289-b0a9-aa17ee5bd8e0",
+		"name": "Location",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33656629",
+		"_collection_link": "https://crimson-shuttle-418536.postman.co/workspace/Team-Workspace~ced9d774-6fe1-4c25-8b59-c4f1391e1deb/collection/33656629-80bc8b47-1626-4289-b0a9-aa17ee5bd8e0?action=share&source=collection_link&creator=33656629"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "ibrahimcansarisakal@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://localhost/api/auth/login",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "ibrahimcansarisakal@gmail.com",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"ibrahim\",\r\n    \"email\":\"ibrahimcansarisakal@gmail.com\",\r\n    \"password\":\"password\",\r\n    \"c_password\":\"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost/api/auth/register",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Locations",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "4|EO9XhqcEZmHToXv6KPpVRP19bITNuBkk7RKeEfhC3a6f0e15",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost/api/locations",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"locations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Store Location",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "17|pO5dFYiPclItvyBvRcVT8zIwLKw1yfQslrQOpzpk69ae8115",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Deneme\",\r\n    \"lat\":42,\r\n    \"long\":42,\r\n    \"marker_color\":\"#050782\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost/api/locations",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"locations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Location Detail",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "9|CQdn1CHynmlLAKcxuQhs6AbkDhzoMwK3JzTX574Ve4751895",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost/api/locations/2",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"locations",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Location",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "9|CQdn1CHynmlLAKcxuQhs6AbkDhzoMwK3JzTX574Ve4751895",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Deneme\",\r\n    \"lat\":33,\r\n    \"long\":32,\r\n    \"marker_color\":\"#050782\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost/api/locations/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"locations",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Location Delete",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "9|CQdn1CHynmlLAKcxuQhs6AbkDhzoMwK3JzTX574Ve4751895",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost/api/locations/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"locations",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Distance",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "17|pO5dFYiPclItvyBvRcVT8zIwLKw1yfQslrQOpzpk69ae8115",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ids\":[2,3]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost/api/locations/make-route",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"locations",
+						"make-route"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

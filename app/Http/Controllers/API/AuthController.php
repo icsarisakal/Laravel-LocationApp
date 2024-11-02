@@ -25,7 +25,7 @@ class AuthController
     public function register(RegisterRequest $request)
     {
         $data = $this->authRepositoryInterface->register($request);
-        return ApiResponseClass::sendResponse(AuthResource::collection($data),'Registration Successful.',201);
+        return ApiResponseClass::sendResponse($data,'Registration Successful.',201);
     }
 
 }

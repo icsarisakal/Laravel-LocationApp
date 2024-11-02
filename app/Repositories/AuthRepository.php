@@ -36,7 +36,6 @@ class AuthRepository implements AuthRepostoryInterface
         $user = User::create($input);
         $success['token'] =  $user->createToken('LocationApp')->plainTextToken;
         $success['name'] =  $user->name;
-
         return $success;
     }
 }

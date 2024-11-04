@@ -145,12 +145,10 @@ it('calculates route distance with exists locations', function () {
 
 it('returns validation error when long parameter is missing', function () {
 
-    // Eksik "long" alanı içeren veri
     $requestData = [
         'lat' => 82.1651,
     ];
 
-    // Mock oluşturmak yerine doğrudan HTTP isteği gönderin
     $request = new \App\Http\Requests\MakeRouteRequest();
     $request->merge($requestData);
 
@@ -171,7 +169,6 @@ it('returns validation error when long parameter is missing', function () {
     $response = $controller->makeRoute($request);
 
     $responseData = json_decode($response->getContent());
-//    dd($responseData);
 
     expect($response->status())->toBe(200)
         ->and($responseData->success)->toBe(true)->not();

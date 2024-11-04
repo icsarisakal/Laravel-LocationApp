@@ -23,35 +23,47 @@ class LocationRepository implements LocationRepositoryInterface
 
     public function getDetail($id)
     {
-        // TODO: Implement getDetail() method.
         return Location::find($id);
     }
 
     public function store(array $data)
     {
-        // TODO: Implement store() method.
         return Location::create($data);
     }
 
     public function update(array $data, $id)
     {
-        // TODO: Implement update() method.
         return Location::whereId($id)->update($data);
     }
 
     public function delete($id)
     {
-        // TODO: Implement delete() method.
         return Location::destroy($id);
     }
 
-    public function makeRoute(array $ids)
+    public function makeRoute(array $data)
     {
-        $first = Location::find($ids[0]);
-        $second = Location::find($ids[1]);
+        $route = [];
+        $dbLocations = Location::all()->toArray();
+        $currentPoint = $data;
 
-        $geo= new GeographicalCalculator();
-        $geo->initCoordinates($first->lat,$second->lat,$first->long,$second->long,['units' => ['km','m','mile']]);
-        return $geo->getDistance();
+        while (!empty($dbLocations)) {
+            foreach ($dbLocations as $key => &$location) {
+                $geo = new GeographicalCalculator();
+                $geo->initCoordinates($currentPoint["lat"], $location["lat"], $currentPoint["long"], $location["long"], ['units' => ['km', 'm', 'mile']]);
+                $location["distance"] = $geo->getDistance();
+            }
+
+            usort($dbLocations, function ($a, $b) {
+                return $a['distance']['km'] <=> $b['distance']['km'];
+            });
+
+            $closestLocation = array_shift($dbLocations);
+            $route[] = $closestLocation;
+
+            $currentPoint = $closestLocation;
+        }
+
+        return $route;
     }
 }

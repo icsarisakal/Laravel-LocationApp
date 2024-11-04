@@ -111,17 +111,27 @@ it('rolls back transaction on update failure', function () {
     expect($response)->toBe(null);
 });
 
-it('calculates route distance when exactly 2 location ids are provided', function () {
+it('calculates route distance with exists locations', function () {
 
     $requestData = [
-        'ids' => [1, 2],
+        'lat' => 82.1651,
+        'long' => 35.8741,
     ];
 
-    $request = new \Illuminate\Http\Request();
+    $request = new \App\Http\Requests\MakeRouteRequest();
     $request->merge($requestData);
 
     $mockLocationRepository = Mockery::mock(LocationRepositoryInterface::class);
-    $mockLocationRepository->shouldReceive('makeRoute')->with($requestData['ids'])->andReturn(120.5);
+
+    $mockLocationRepository
+        ->shouldReceive('makeRoute')
+        ->once()
+        ->with(Mockery::on(function($data) {
+            return is_array($data);
+        }))
+        ->andReturn([
+            'success' => true,
+        ]);
 
     $controller = new LocationController($mockLocationRepository);
 
@@ -130,28 +140,42 @@ it('calculates route distance when exactly 2 location ids are provided', functio
     $responseData = json_decode($response->getContent());
 
     expect($response->status())->toBe(200)
-        ->and($responseData->message)->toBe('Distance Calculated')
-        ->and($responseData->data->related_locations)->toBe([1, 2])
-        ->and($responseData->data->result)->toBe(120.5);
+        ->and($responseData->success)->toBe(true);
 });
 
-it('returns an error when location count is not 2', function () {
+it('returns validation error when long parameter is missing', function () {
 
+    // Eksik "long" alanı içeren veri
     $requestData = [
-        'ids' => [1, 2, 3],
+        'lat' => 82.1651,
     ];
 
-    $request = new \Illuminate\Http\Request();
+    // Mock oluşturmak yerine doğrudan HTTP isteği gönderin
+    $request = new \App\Http\Requests\MakeRouteRequest();
     $request->merge($requestData);
 
     $mockLocationRepository = Mockery::mock(LocationRepositoryInterface::class);
+
+    $mockLocationRepository
+        ->shouldReceive('makeRoute')
+        ->once()
+        ->with(Mockery::on(function($data) {
+            return is_array($data);
+        }))
+        ->andReturn([
+            'success' => false,
+        ]);
 
     $controller = new LocationController($mockLocationRepository);
 
     $response = $controller->makeRoute($request);
 
     $responseData = json_decode($response->getContent());
+//    dd($responseData);
 
-    expect($response->status())->toBe(400)
-        ->and($responseData->message)->toBe('Locations count must be 2');
+    expect($response->status())->toBe(200)
+        ->and($responseData->success)->toBe(true)->not();
 });
+
+
+

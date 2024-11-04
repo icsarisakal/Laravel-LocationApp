@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Classes\ApiResponseClass;
+use App\Http\Requests\MakeRouteRequest;
 use App\Http\Requests\StoreLocationRequest;
 use App\Http\Requests\UpdateLocationRequest;
 use App\Http\Resources\LocationResource;
 use App\Interfaces\LocationRepositoryInterface;
-use App\Models\Location;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class LocationController extends Controller
@@ -101,14 +100,14 @@ class LocationController extends Controller
         return ApiResponseClass::sendResponse('Location Delete Successful','',204);
     }
 
-    public function makeRoute(Request $request)
+    public function makeRoute(MakeRouteRequest $request)
     {
-        if (count($request->ids)!=2){
-            return ApiResponseClass::sendResponse(null,'Locations count must be 2',400);
-        }
-        $distance=$this->locationRepositoryInterface->makeRoute($request->ids);
+        $routeDetails =[
+            'lat' => $request->lat,
+            'long' => $request->long,
+        ];
+        $distance=$this->locationRepositoryInterface->makeRoute($routeDetails);
         $rslt=[
-            "related_locations"=>$request->ids,
             "result"=>$distance
         ];
         return ApiResponseClass::sendResponse($rslt,'Distance Calculated',200);

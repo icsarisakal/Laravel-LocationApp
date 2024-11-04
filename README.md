@@ -195,7 +195,8 @@ Accept:application/json
 
 ```json
 {
-    "ids":[2,3]
+    "lat":48,
+    "long":90
 }
 ```
 
